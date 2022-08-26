@@ -13,7 +13,12 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
-  plugins: ['react', '@typescript-eslint', 'typescript-sort-keys', 'unused-imports'],
+  plugins: [
+    'react',
+    '@typescript-eslint',
+    'typescript-sort-keys',
+    'unused-imports',
+  ],
   rules: {
     'typescript-sort-keys/interface': 'error',
     'typescript-sort-keys/string-enum': 'error',
@@ -31,5 +36,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'error',
     'unused-imports/no-unused-imports': 'error',
     'max-len': [1, { code: 120 }],
+    'jsx-a11y/no-static-element-interactions': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
   },
 };

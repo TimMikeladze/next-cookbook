@@ -1,0 +1,45 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.next-kitchen-toolbar {
+
+}
+
+.next-kitchen-main {
+  display: flex;
+}
+
+.next-kitchen-component {
+  padding: 16px;
+}
+
+.next-kitchen-menu {
+  padding-left: 16px;
+  padding-top: 16px;
+  width: 200px;
+  border-right-style: solid;
+  border-right-color: gray;
+  height: 100vh
+}
+
+.next-kitchen-menu-group {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.next-kitchen-menu-item {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  cursor: pointer;
+}
+
+.next-kitchen-menu-group-items {
+  padding-left: 16px;
+}
