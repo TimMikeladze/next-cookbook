@@ -1,5 +1,5 @@
 {
-  "name": "next-kitchen",
+  "name": "next-cookbook",
   "description": "",
   "version": "0.0.1",
   "author": "Tim Mikeladze <tim.mikeladze@gmail.com>",
@@ -7,7 +7,7 @@
   "keywords": [],
   "repository": {
     "type": "git",
-    "url": "git@github.com:TimMikeladze/next-kitchen.git"
+    "url": "git@github.com:TimMikeladze/next-cookbook.git"
   },
   "scripts": {
     "dev": "yarn build --watch --onSuccess \"yarn yalc:push\"",
@@ -76,7 +76,6 @@
     "@typescript-eslint/eslint-plugin": "5.33.1",
     "@typescript-eslint/parser": "5.33.1",
     "babel-loader": "8.2.5",
-    "concurrently": "7.3.0",
     "eslint": "8.22.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-plugin-import": "2.26.0",
@@ -96,23 +95,12 @@
     "react-test-renderer": "18.2.0",
     "ts-jest": "28.0.8",
     "tsup": "6.2.2",
-    "typescript": "4.7.4"
+    "typescript": "4.7.4",
+    "fuse.js": "6.6.2"
   },
   "peerDependencies": {
     "next": ">=12",
     "react": ">=17",
     "react-dom": ">=17"
-  },
-  "dependencies": {
-    "commander": "9.4.0",
-    "deepmerge": "4.2.2",
-    "globby": "13.1.2",
-    "graphql-modules": "2.1.0",
-    "gray-matter": "4.0.3",
-    "minisearch": "5.0.0",
-    "remark": "14.0.2",
-    "slugify": "1.6.5",
-    "strip-markdown": "5.0.0",
-    "yaml": "2.1.1"
   }
 }

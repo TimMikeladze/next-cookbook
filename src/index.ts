@@ -1,1 +1,1 @@
-export * from './NextKitchen';
+export * from './NextCookbook';
