@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import './NextCookbook.css';
 import { useRouter } from 'next/router';
 import Fuse from 'fuse.js';
@@ -14,10 +14,11 @@ export interface NextCookbookProps {
   Head?: React.ElementType;
   components: NextCookbookComponent[];
   defaultComponent?: string;
+  fuseOptions?: Fuse.IFuseOptions<string>,
   useRouter?: () => any
 }
 
-const options = {
+const defaultFuseOptions = {
   keys: ['name'],
 };
 
@@ -31,14 +32,14 @@ export const NextCookbook = (props: NextCookbookProps) => {
     null,
   );
 
-  const handleChangeSelected = (selectedComponent: string) => {
+  const handleChangeSelected = useCallback((selectedComponent: string) => {
     router.push({
       pathname: router.pathname,
       query: {
         selectedComponent,
       },
     });
-  };
+  }, []);
 
   const selectedComponent = (router.query.selectedComponent as string) || props.defaultComponent;
 
@@ -73,19 +74,23 @@ export const NextCookbook = (props: NextCookbookProps) => {
   }, [props.components]);
 
   const fuse = useMemo(
-    () => new Fuse(Array.from(data.map.keys()), options),
-    [props.components],
+    () => new Fuse(Array.from(data.map.keys()), {
+      ...defaultFuseOptions,
+      ...props.fuseOptions,
+    }),
+    [props.components, props.fuseOptions],
   );
 
-  const handleSearch = (text: string) => {
+  const handleSearch = useCallback((text: string) => {
     if (!text.trim().length) {
       setSearchResults(null);
     } else {
       setSearchResults(fuse.search(text).map((x) => x.item));
     }
-  };
+  }, []);
 
   let error;
+
   if (data.hasDuplicates) {
     error = (
       <div className="next-cookbook-root">
