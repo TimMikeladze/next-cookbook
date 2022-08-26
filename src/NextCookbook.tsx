@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo } from 'react';
 import './NextCookbook.css';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router.js';
 import Fuse from 'fuse.js';
-import _Head from 'next/head';
+import _Head from 'next/head.js';
 
 export interface NextCookbookComponent {
   children: React.ReactNode | NextCookbookComponent[];
