@@ -27,7 +27,7 @@ body {
   padding-top: 16px;
   width: 200px;
   border-right-style: solid;
-  border-right-color: gray;
+  border-right-color: #000000;
   height: 100vh;
   overflow: hidden;
   flex-shrink: 0;
@@ -48,6 +48,14 @@ body {
   margin-top: 4px;
   margin-bottom: 4px;
   cursor: pointer;
+}
+
+.next-cookbook-menu-item-selected {
+  text-decoration: underline;
+}
+
+.next-cookbook-menu-item:hover {
+  text-decoration: underline dotted;
 }
 
 .next-cookbook-menu-group-items {

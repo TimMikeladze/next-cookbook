@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import './NextCookbook.css';
 import { useRouter } from 'next/router';
 import Fuse from 'fuse.js';
+import _Head from 'next/head';
 
 export interface NextCookbookComponent {
   children: React.ReactNode | NextCookbookComponent[];
@@ -10,6 +11,7 @@ export interface NextCookbookComponent {
 }
 
 export interface NextCookbookProps {
+  Head?: React.ElementType;
   components: NextCookbookComponent[];
   defaultComponent?: string;
   useRouter?: () => any
@@ -23,6 +25,7 @@ const sortAlphaNumerically = (a: string, b: string) => a.localeCompare(b, 'en', 
 
 export const NextCookbook = (props: NextCookbookProps) => {
   const router = props.useRouter ? props.useRouter() : useRouter();
+  const Head = props.Head || _Head;
 
   const [searchResults, setSearchResults] = React.useState<string[] | null>(
     null,
@@ -82,8 +85,9 @@ export const NextCookbook = (props: NextCookbookProps) => {
     }
   };
 
+  let error;
   if (data.hasDuplicates) {
-    return (
+    error = (
       <div className="next-cookbook-root">
         <div className="next-cookbook-error">
           Duplicate component or group names detected. Please ensure that all
@@ -93,8 +97,8 @@ export const NextCookbook = (props: NextCookbookProps) => {
     );
   }
 
-  return (
-    <div className="next-cookbook-root">
+  const content = (
+    <>
       <div className="next-cookbook-toolbar" />
       <div className="next-cookbook-main">
         <div className="next-cookbook-menu">
@@ -111,7 +115,7 @@ export const NextCookbook = (props: NextCookbookProps) => {
                 .map((name) => (
                   <div
                     key={name}
-                    className="next-cookbook-menu-item"
+                    className={`next-cookbook-menu-item ${name === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
                     onClick={() => handleChangeSelected(name)}
                   >
                     {name}
@@ -132,7 +136,7 @@ export const NextCookbook = (props: NextCookbookProps) => {
                             .map((x) => (
                               <div
                                 key={`${item.name}-${x.name}`}
-                                className="next-cookbook-menu-item"
+                                className={`next-cookbook-menu-item ${`${item.name} - ${x.name}` === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
                                 onClick={() => handleChangeSelected(`${item.name} - ${x.name}`)}
                               >
                                 {x.name}
@@ -145,7 +149,7 @@ export const NextCookbook = (props: NextCookbookProps) => {
                   return (
                     <div
                       key={item.name}
-                      className="next-cookbook-menu-item"
+                      className={`next-cookbook-menu-item ${item.name === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
                       onClick={() => handleChangeSelected(item.name)}
                     >
                       {item.name}
@@ -158,6 +162,15 @@ export const NextCookbook = (props: NextCookbookProps) => {
           {selectedComponent && data.map.get(selectedComponent)}
         </div>
       </div>
+    </>
+  );
+
+  return (
+    <div className="next-cookbook-root">
+      <Head>
+        <title>Next Cookbook</title>
+      </Head>
+      {error || content}
     </div>
   );
 };
