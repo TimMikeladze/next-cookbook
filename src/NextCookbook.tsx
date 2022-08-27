@@ -11,10 +11,13 @@ export interface NextCookbookComponent {
 }
 
 export interface NextCookbookProps {
-  Head?: React.ElementType;
   components: NextCookbookComponent[];
   defaultComponent?: string;
   fuseOptions?: Fuse.IFuseOptions<string>,
+  overrides: {
+    Head?: React.ElementType;
+  },
+  toolbarActions?: React.ReactNode;
   useRouter?: () => any
 }
 
@@ -26,7 +29,7 @@ const sortAlphaNumerically = (a: string, b: string) => a.localeCompare(b, 'en', 
 
 export const NextCookbook = (props: NextCookbookProps) => {
   const router = props.useRouter ? props.useRouter() : useRouter();
-  const Head = props.Head || _Head;
+  const Head = props.overrides?.Head || _Head;
 
   const [searchResults, setSearchResults] = React.useState<string[] | null>(
     null,
@@ -103,71 +106,75 @@ export const NextCookbook = (props: NextCookbookProps) => {
   }
 
   const content = (
-    <>
-      <div className="next-cookbook-toolbar" />
-      <div className="next-cookbook-main">
-        <div className="next-cookbook-menu">
-          <input
-            className="next-cookbook-search"
-            placeholder="Search...
+    <div className="next-cookbook-main">
+      <div className="next-cookbook-menu">
+        <input
+          className="next-cookbook-search"
+          placeholder="Search...
             "
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-          <div className="next-cookbook-menu-items">
-            {Array.isArray(searchResults)
-              ? Array.from(data.map.keys())
-                .filter((searchResult) => searchResults.includes(searchResult))
-                .map((name) => (
-                  <div
-                    key={name}
-                    className={`next-cookbook-menu-item ${name === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
-                    onClick={() => handleChangeSelected(name)}
-                  >
-                    {name}
-                  </div>
-                ))
-              : props.components
-                .sort((a, b) => sortAlphaNumerically(a.name, b.name))
-                .map((item) => {
-                  if (Array.isArray(item.children)) {
-                    return (
-                      <div className="next-cookbook-menu-group" key={item.name}>
-                        <div className="next-cookbook-menu-group-name">
-                          {item.name}
-                        </div>
-                        <div className="next-cookbook-menu-group-items">
-                          {item.children
-                            .sort((a, b) => sortAlphaNumerically(a.name, b.name))
-                            .map((x) => (
-                              <div
-                                key={`${item.name}-${x.name}`}
-                                className={`next-cookbook-menu-item ${`${item.name} - ${x.name}` === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
-                                onClick={() => handleChangeSelected(`${item.name} - ${x.name}`)}
-                              >
-                                {x.name}
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-                    );
-                  }
+          onChange={(e) => handleSearch(e.target.value)}
+        />
+        <div className="next-cookbook-menu-items">
+          {Array.isArray(searchResults)
+            ? Array.from(data.map.keys())
+              .filter((searchResult) => searchResults.includes(searchResult))
+              .map((name) => (
+                <div
+                  key={name}
+                  className={`next-cookbook-menu-item ${name === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
+                  onClick={() => handleChangeSelected(name)}
+                >
+                  {name}
+                </div>
+              ))
+            : props.components
+              .sort((a, b) => sortAlphaNumerically(a.name, b.name))
+              .map((item) => {
+                if (Array.isArray(item.children)) {
                   return (
-                    <div
-                      key={item.name}
-                      className={`next-cookbook-menu-item ${item.name === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
-                      onClick={() => handleChangeSelected(item.name)}
-                    >
-                      {item.name}
+                    <div className="next-cookbook-menu-group" key={item.name}>
+                      <div className="next-cookbook-menu-group-name">
+                        {item.name}
+                      </div>
+                      <div className="next-cookbook-menu-group-items">
+                        {item.children
+                          .sort((a, b) => sortAlphaNumerically(a.name, b.name))
+                          .map((x) => (
+                            <div
+                              key={`${item.name}-${x.name}`}
+                              className={`next-cookbook-menu-item ${`${item.name} - ${x.name}` === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
+                              onClick={() => handleChangeSelected(`${item.name} - ${x.name}`)}
+                            >
+                              {x.name}
+                            </div>
+                          ))}
+                      </div>
                     </div>
                   );
-                })}
+                }
+                return (
+                  <div
+                    key={item.name}
+                    className={`next-cookbook-menu-item ${item.name === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
+                    onClick={() => handleChangeSelected(item.name)}
+                  >
+                    {item.name}
+                  </div>
+                );
+              })}
+        </div>
+      </div>
+      <div className="next-cookbook-content">
+        <div className="next-cookbook-toolbar">
+          <div className="next-cookbook-toolbar-actions">
+            {props.toolbarActions}
           </div>
         </div>
         <div className="next-cookbook-component">
           {selectedComponent && data.map.get(selectedComponent)}
         </div>
       </div>
-    </>
+    </div>
   );
 
   return (
