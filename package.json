@@ -16,7 +16,7 @@
     "build": "tsup && yarn yalc:push",
     "type-check": "tsc --noEmit",
     "lint": "eslint --ignore-path .gitignore \"{src,tests}/**/*.+(ts|js|tsx)\"",
-    "lint:fix": "yarn lint --fix && prettier --write .",
+    "lint:fix": "yarn lint --fix && prettier --ignore-path .prettierignore --write .",
     "test": "yarn node --experimental-vm-modules $(yarn bin jest) --runInBand --forceExit --passWithNoTests",
     "test:ci": "yarn test --ci --coverage",
     "test:watch": "jest --watch",
@@ -65,7 +65,7 @@
     "./{src,tests}/**/*.{ts,js,jsx,tsx}": [
       "eslint --ignore-path .gitignore --fix"
     ],
-    "*": "prettier --write"
+    "*": "prettier --ignore-path .prettierignore --write"
   },
   "config": {
     "commitizen": {

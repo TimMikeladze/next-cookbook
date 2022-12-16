@@ -13,12 +13,12 @@ export interface NextCookbookComponent {
 export interface NextCookbookProps {
   components: NextCookbookComponent[];
   defaultComponent?: string;
-  fuseOptions?: Fuse.IFuseOptions<string>,
-  overrides: {
+  fuseOptions?: Fuse.IFuseOptions<string>;
+  overrides?: {
     Head?: React.ElementType;
-  },
+  };
   toolbarActions?: React.ReactNode;
-  useRouter?: () => any
+  useRouter?: () => any;
 }
 
 const defaultFuseOptions = {
@@ -121,7 +121,11 @@ export const NextCookbook = (props: NextCookbookProps) => {
               .map((name) => (
                 <div
                   key={name}
-                  className={`next-cookbook-menu-item ${name === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
+                  className={`next-cookbook-menu-item ${
+                    name === selectedComponent
+                      ? 'next-cookbook-menu-item-selected'
+                      : ''
+                  }`}
                   onClick={() => handleChangeSelected(name)}
                 >
                   {name}
@@ -142,8 +146,15 @@ export const NextCookbook = (props: NextCookbookProps) => {
                           .map((x) => (
                             <div
                               key={`${item.name}-${x.name}`}
-                              className={`next-cookbook-menu-item ${`${item.name} - ${x.name}` === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
-                              onClick={() => handleChangeSelected(`${item.name} - ${x.name}`)}
+                              className={`next-cookbook-menu-item ${
+                                `${item.name} - ${x.name}`
+                                  === selectedComponent
+                                  ? 'next-cookbook-menu-item-selected'
+                                  : ''
+                              }`}
+                              onClick={() => handleChangeSelected(
+                                `${item.name} - ${x.name}`,
+                              )}
                             >
                               {x.name}
                             </div>
@@ -155,7 +166,11 @@ export const NextCookbook = (props: NextCookbookProps) => {
                 return (
                   <div
                     key={item.name}
-                    className={`next-cookbook-menu-item ${item.name === selectedComponent ? 'next-cookbook-menu-item-selected' : ''}`}
+                    className={`next-cookbook-menu-item ${
+                      item.name === selectedComponent
+                        ? 'next-cookbook-menu-item-selected'
+                        : ''
+                    }`}
                     onClick={() => handleChangeSelected(item.name)}
                   >
                     {item.name}

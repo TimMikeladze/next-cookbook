@@ -2,5 +2,10 @@ dist
 coverage
 storybook-static
 .prettierignore
-yarn.lock
+*.lock
 *.snap
+examples/**/.gitignore
+examples/**/.yalc/*
+examples/**/.next/*
+yalc.lock
+.gitignore
