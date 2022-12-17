@@ -17,6 +17,7 @@ export interface NextCookbookProps {
   overrides?: {
     Head?: React.ElementType;
   };
+  sort?: 'alphanumeric' | ((a: string, b: string) => number);
   toolbarActions?: React.ReactNode;
   useRouter?: () => any;
 }
@@ -25,7 +26,7 @@ const defaultFuseOptions = {
   keys: ['name'],
 };
 
-const sortAlphaNumerically = (a: string, b: string) => a.localeCompare(b, 'en', { numeric: true });
+export const sortAlphaNumerically = (a: string, b: string) => a.localeCompare(b, 'en', { numeric: true });
 
 export const NextCookbook = (props: NextCookbookProps) => {
   const router = props.useRouter ? props.useRouter() : useRouter();
@@ -43,6 +44,8 @@ export const NextCookbook = (props: NextCookbookProps) => {
       },
     });
   }, []);
+
+  const { sort } = props;
 
   const selectedComponent = (router.query.selectedComponent as string) || props.defaultComponent;
 
@@ -132,7 +135,7 @@ export const NextCookbook = (props: NextCookbookProps) => {
                 </div>
               ))
             : props.components
-              .sort((a, b) => sortAlphaNumerically(a.name, b.name))
+              .sort((a, b) => sort(a.name, b.name))
               .map((item) => {
                 if (Array.isArray(item.children)) {
                   return (
@@ -142,7 +145,7 @@ export const NextCookbook = (props: NextCookbookProps) => {
                       </div>
                       <div className="next-cookbook-menu-group-items">
                         {item.children
-                          .sort((a, b) => sortAlphaNumerically(a.name, b.name))
+                          .sort((a, b) => sort(a.name, b.name))
                           .map((x) => (
                             <div
                               key={`${item.name}-${x.name}`}

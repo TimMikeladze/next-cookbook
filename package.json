@@ -10,10 +10,10 @@
     "url": "git@github.com:TimMikeladze/next-cookbook.git"
   },
   "scripts": {
-    "dev": "yarn build --watch --onSuccess \"yarn yalc:push\"",
+    "dev": "concurrently \"yarn build --watch\" \"yarn test:watch\" ",
     "cli": "yarn build && node dist/cli.mjs",
-    "yalc:push": "npx yalc push",
-    "build": "tsup && yarn yalc:push",
+    "yalc:publish": "npx yalc publish",
+    "build": "tsup --onSuccess \"yarn yalc:publish\"",
     "type-check": "tsc --noEmit",
     "lint": "eslint --ignore-path .gitignore \"{src,tests}/**/*.+(ts|js|tsx)\"",
     "lint:fix": "yarn lint --fix && prettier --ignore-path .prettierignore --write .",
@@ -89,6 +89,7 @@
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
     "babel-loader": "9.1.0",
+    "concurrently": "7.6.0",
     "eslint": "8.30.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-plugin-import": "2.26.0",

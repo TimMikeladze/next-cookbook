@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* apply tailwind styles to an existing class */
+
+.next-cookbook-menu-item {
+  @apply px-2 py-1 rounded-md text-sm font-medium;
+}
+
+.next-cookbook-menu-group {
+  @apply px-2 py-1 rounded-md text-lg font-medium;
+}
+
+.next-cookbook-menu {
+  @apply w-72 border-r border-gray-200 !important;
+}
