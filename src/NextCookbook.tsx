@@ -17,7 +17,6 @@ export interface NextCookbookProps {
   overrides?: {
     Head?: React.ElementType;
   };
-  sort?: 'alphanumeric' | ((a: string, b: string) => number);
   toolbarActions?: React.ReactNode;
   useRouter?: () => any;
 }
@@ -44,8 +43,6 @@ export const NextCookbook = (props: NextCookbookProps) => {
       },
     });
   }, []);
-
-  const { sort } = props;
 
   const selectedComponent = (router.query.selectedComponent as string) || props.defaultComponent;
 
@@ -134,52 +131,45 @@ export const NextCookbook = (props: NextCookbookProps) => {
                   {name}
                 </div>
               ))
-            : props.components
-              .sort((a, b) => sort(a.name, b.name))
-              .map((item) => {
-                if (Array.isArray(item.children)) {
-                  return (
-                    <div className="next-cookbook-menu-group" key={item.name}>
-                      <div className="next-cookbook-menu-group-name">
-                        {item.name}
-                      </div>
-                      <div className="next-cookbook-menu-group-items">
-                        {item.children
-                          .sort((a, b) => sort(a.name, b.name))
-                          .map((x) => (
-                            <div
-                              key={`${item.name}-${x.name}`}
-                              className={`next-cookbook-menu-item ${
-                                `${item.name} - ${x.name}`
-                                  === selectedComponent
-                                  ? 'next-cookbook-menu-item-selected'
-                                  : ''
-                              }`}
-                              onClick={() => handleChangeSelected(
-                                `${item.name} - ${x.name}`,
-                              )}
-                            >
-                              {x.name}
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                  );
-                }
+            : props.components.map((item) => {
+              if (Array.isArray(item.children)) {
                 return (
-                  <div
-                    key={item.name}
-                    className={`next-cookbook-menu-item ${
-                      item.name === selectedComponent
-                        ? 'next-cookbook-menu-item-selected'
-                        : ''
-                    }`}
-                    onClick={() => handleChangeSelected(item.name)}
-                  >
-                    {item.name}
+                  <div className="next-cookbook-menu-group" key={item.name}>
+                    <div className="next-cookbook-menu-group-name">
+                      {item.name}
+                    </div>
+                    <div className="next-cookbook-menu-group-items">
+                      {item.children.map((x) => (
+                        <div
+                          key={`${item.name}-${x.name}`}
+                          className={`next-cookbook-menu-item ${
+                            `${item.name} - ${x.name}` === selectedComponent
+                              ? 'next-cookbook-menu-item-selected'
+                              : ''
+                          }`}
+                          onClick={() => handleChangeSelected(`${item.name} - ${x.name}`)}
+                        >
+                          {x.name}
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 );
-              })}
+              }
+              return (
+                <div
+                  key={item.name}
+                  className={`next-cookbook-menu-item ${
+                    item.name === selectedComponent
+                      ? 'next-cookbook-menu-item-selected'
+                      : ''
+                  }`}
+                  onClick={() => handleChangeSelected(item.name)}
+                >
+                  {item.name}
+                </div>
+              );
+            })}
         </div>
       </div>
       <div className="next-cookbook-content">
