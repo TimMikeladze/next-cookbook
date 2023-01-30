@@ -5,7 +5,7 @@ import Fuse from 'fuse.js';
 import _Head from 'next/head.js';
 
 export interface NextCookbookComponent {
-  children: React.ReactNode | NextCookbookComponent[];
+  children: React.ReactNode | NextCookbookComponent[] | (() => React.ReactNode);
   description?: string;
   name: string;
 }
@@ -59,7 +59,7 @@ export const NextCookbook = (props: NextCookbookProps) => {
   const selectedComponent = (router.query.selectedComponent as string) || props.defaultComponent;
 
   const data = useMemo(() => {
-    const map = new Map<string, React.ReactNode>();
+    const map = new Map<string, React.ReactNode |(() => React.ReactNode)>();
 
     const array = props.components.flatMap((component) => {
       if (!Array.isArray(component.children)) {
@@ -116,6 +116,17 @@ export const NextCookbook = (props: NextCookbookProps) => {
       </div>
     );
   }
+
+  const renderSelectedComponent = (key: string) => {
+    const children = data.map.get(key);
+
+    // check if react render function
+    if (typeof children === 'function') {
+      return null;
+    }
+
+    return children;
+  };
 
   const content = (
     <div className="next-cookbook-main">
@@ -191,7 +202,7 @@ export const NextCookbook = (props: NextCookbookProps) => {
           </div>
         </div>
         <div className="next-cookbook-component">
-          {selectedComponent && data.map.get(selectedComponent)}
+          {selectedComponent && renderSelectedComponent(selectedComponent)}
         </div>
       </div>
     </div>
